@@ -58,7 +58,7 @@ function slm_settings_link($links)
     $links[] = '<a href="' .
         admin_url('admin.php?page=slm_settings') .
         '">' . __('Settings') . '</a>';
-    $links[] = '<a href="https://github.com/michelve/software-license-manager" target="_blank">' . __('GitHub') . '</a>';
+    $links[] = '<a href="https://github.com/jordan-mace/software-license-manager" target="_blank">' . __('GitHub') . '</a>';
     return $links;
 }
 
