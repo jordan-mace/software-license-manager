@@ -178,17 +178,17 @@ class SLM_API_Listener
             //Enable item_reference verification during activation
             if ($options['slm_multiple_items'] == 1) {
                 $sql_prep1          = $wpdb->prepare("SELECT * FROM $tbl_name WHERE license_key = %s AND item_reference = %s", $key, $item_reference);
-                $retLic             = $wpdb->get_row($sql_prep1, OBJECT);
+                $retLic             = $wpdb->get_row($sql_prep1);
             } else {
                 $sql_prep1          = $wpdb->prepare("SELECT * FROM $tbl_name WHERE license_key = %s", $key);
-                $retLic             = $wpdb->get_row($sql_prep1, OBJECT);
+                $retLic             = $wpdb->get_row($sql_prep1);
             }
 
             $sql_prep2          = $wpdb->prepare("SELECT * FROM $reg_table WHERE lic_key = %s", $key);
-            $reg_domains        = $wpdb->get_results($sql_prep2, OBJECT);
+            $reg_domains        = $wpdb->get_results($sql_prep2);
 
             $sql_prep3          = $wpdb->prepare("SELECT * FROM $reg_table_devices WHERE lic_key = %s", $key);
-            $reg_devices        = $wpdb->get_results($sql_prep3, OBJECT);
+            $reg_devices        = $wpdb->get_results($sql_prep3);
 
             if ($retLic) {
                 if ($retLic->lic_status == 'blocked') {
@@ -258,13 +258,13 @@ class SLM_API_Listener
                     }
                 }
 
-                if (isset($_REQUEST['registered_devices']) && !empty($_REQUEST['registered_devices'])) {
+                if (isset($registered_devices) && !empty($registered_devices)) {
                     if (count($reg_devices) < floor($retLic->max_allowed_devices)) {
                         foreach ($reg_devices as $reg_devices) {
                             if (isset($_REQUEST['migrate_from']) && (trim($_REQUEST['migrate_from']) == $reg_devices->registered_devices)) {
 
                                 $wpdb->update($reg_table_devices, array(
-                                    'registered_devices' => $fields['registered_devices']
+                                    'registered_devices' => $registered_devices
                                 ), array(
                                     'registered_devices' => trim(strip_tags($_REQUEST['migrate_from']))
                                 ));
@@ -274,7 +274,7 @@ class SLM_API_Listener
                                 ));
                                 SLM_API_Utility::output_api_response($devices_args);
                             }
-                            if ($fields['registered_devices'] == $reg_devices->registered_devices) {
+                            if ($registered_devices == $reg_devices->registered_devices) {
                                 $devices_args = (array(
                                     'result'        => 'error',
                                     'icon_url'      =>  SLM_Utility::slm_get_icon_url('1x', 'f-remove.png'),
@@ -301,7 +301,7 @@ class SLM_API_Listener
 
                         $args = (array(
                             'result'                => 'success',
-                            'registered_device'     => $_REQUEST['registered_devices'],
+                            'registered_device'     => $registered_devices,
                             'code'                  => SLM_Error_Codes::LICENSE_ACTIVATED,
                             'icon_url'              =>  SLM_Utility::slm_get_icon_url('1x', 'verified.png'),
                             'message'               => 'Updating license key status to active for device.',
