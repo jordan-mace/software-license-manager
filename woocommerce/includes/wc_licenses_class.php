@@ -196,11 +196,6 @@ class SLM_Woo_Account
                                 }
                                 ?>
                             </td>
-                            <td class="slm-view" data-title="<?php echo esc_html__('view', 'softwarelicensemanager'); ?>">
-                                <button href="" class="woocommerce-button button view">
-                                    <?php echo esc_html__('view', 'softwarelicensemanager'); ?>
-                                </button>
-                            </td>
                         </tr>
                         <tr data-toggle="collapse" data-target=".demo<?php echo $class_++; ?>" class="woocommerce-orders-table__row woocommerce-orders-table__row--status-completed order">
                             <div class="collapse demo<?php echo $class_id_++; ?> slm-shadow">
